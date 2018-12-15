@@ -1,0 +1,36 @@
+#include <iostream>
+using namespace std;
+#define ll long long
+ll isValidTime(ll *rank,ll prata,ll cook,ll x){
+     ll cnt=1;
+    ll sum=0;
+    for(ll i=0;i<cook;i++){
+           sum=0,   cnt=1;
+        while(sum+cnt*rank[i]<=x&&prata>0){
+             sum+=cnt*rank[i];
+             cnt++;
+             prata-=1;
+        }
+    }
+    return prata==0;
+}
+ll compute(ll *rank,ll prata,ll cook){
+    ll s=0,e=1e18;
+    ll ans=-1;
+    while(s<=e){
+        ll mid=(s+e)/2;
+        if(isValidTime(rank,prata,cook,mid)){
+            e=mid-1;
+            ans=mid;
+        }else s=mid+1;
+    }
+   return ans;
+}
+int main() {
+ll prata,cook;
+cin>>prata>>cook;
+ll rank[cook];
+for(ll i=0;i<cook;i++)cin>>rank[i];
+ll ans=compute(rank,prata,cook);
+cout<<ans<<endl;
+}

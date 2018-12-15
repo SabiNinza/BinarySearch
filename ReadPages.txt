@@ -1,0 +1,45 @@
+#include <iostream>
+using namespace std;
+#define ll long long
+bool IsReading_possible(ll *bk_pg,ll NO_bk,ll N_stud,ll pages){
+   ll cnt_std=1;
+   ll sum_pg=0;
+   for(ll i=0;i<NO_bk;i++){
+       //if book page greater then reading page available in book
+      if(bk_pg[i]>pages) return false;
+       if(sum_pg+bk_pg[i]<=pages){
+          sum_pg+=bk_pg[i];
+           }else{
+               cnt_std++;
+               if(cnt_std>N_stud) return false;
+               sum_pg=bk_pg[i];
+           }
+       }
+   
+   return true;
+}
+ll compute(ll *bk_pg,ll NO_bk,ll N_stud){
+   ll s=bk_pg[0],e=0;
+   for(int i=0;i<NO_bk;i++){
+       e+=bk_pg[i];
+       s=min(s,bk_pg[i]);
+   }
+   ll ans=-1;
+   while(s<=e){
+       ll mid=(s+e)/2;
+       if(IsReading_possible(bk_pg,NO_bk,N_stud,mid)){
+           ans=mid;
+           e=mid-1;
+       }else s=mid+1;
+   }
+   return ans;
+}
+int main() {
+    ll NO_bk,N_stud;
+    cin>>NO_bk>>N_stud;
+    ll bk_pg[100005];
+    for(ll i=0;i<NO_bk;i++) cin>>bk_pg[i];
+    ll ans=compute(bk_pg,NO_bk,N_stud);
+    cout<<ans<<endl;
+    return 0;
+}
